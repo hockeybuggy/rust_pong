@@ -5,3 +5,4 @@ authors = ["Douglas Anderson <hockeybuggy@gmail.com>"]
 
 [dependencies]
 glium = "*"
+image = "*"
