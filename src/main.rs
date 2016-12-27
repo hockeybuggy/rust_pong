@@ -86,20 +86,40 @@ fn main() {
 
     let light = [-1.0, 0.4, 0.9f32];
 
+    let matrix = [
+        [0.01, 0.0, 0.0, 0.0],
+        [0.0, 0.01, 0.0, 0.0],
+        [0.0, 0.0, 0.01, 0.0],
+        [0.0, 0.0, 2.0, 1.0f32],
+    ];
 
     loop {
-        let uniforms = uniform! {
-            matrix: [
-                [0.01, 0.0, 0.0, 0.0],
-                [0.0, 0.01, 0.0, 0.0],
-                [0.0, 0.0, 0.01, 0.0],
-                [0.0, 0.0, 0.0, 1.0f32],
-            ],
-            u_light: light
-        };
-
         let mut target = display.draw();
         target.clear_color_and_depth((0.0, 0.0, 1.0, 1.0), 1.0);
+
+        let perspective = {
+            let (width, height) = target.get_dimensions();
+            let aspect_ratio = height as f32 / width as f32;
+
+            let fov: f32 = 3.141592 / 3.0;
+            let zfar = 1024.0;
+            let znear = 0.1;
+
+            let f = 1.0 / (fov / 2.0).tan();
+
+            [
+                [ f * aspect_ratio, 0.0, 0.0, 0.0],
+                [ 0.0, f, 0.0, 0.0],
+                [ 0.0, 0.0, (zfar+znear)/(zfar-znear), 1.0],
+                [ 0.0, 0.0, -(2.0*zfar*znear)/(zfar-znear), 0.0],
+            ]
+        };
+
+        let uniforms = uniform! {
+            matrix: matrix,
+            perspective: perspective,
+            u_light: light,
+        };
 
         target.draw(
             (&positions, &normals),
