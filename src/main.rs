@@ -53,7 +53,11 @@ fn main() {
     //     image_dimensions
     // );
 
-    let display = glium::glutin::WindowBuilder::new().build_glium().unwrap();
+    let display = glium::glutin::WindowBuilder::new()
+        .with_title("Glium tutorial")
+        .with_dimensions(600, 600)
+        .build_glium()
+        .unwrap();
 
     // let texture = glium::texture::Texture2d::new(&display, gl_image).unwrap();
 
