@@ -7,6 +7,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
+mod teapot;
+
 
 #[derive(Copy, Clone)]
 struct Vertex {
@@ -38,22 +40,22 @@ fn read_shader(shader_type: &str) -> String {
 
 fn main() {
     use glium::{DisplayBuild, Surface};
-    use std::io::Cursor;
+    // use std::io::Cursor;
 
     let vertex_shader_src: &str = &read_shader("vertex");
     let fragment_shader_src: &str = &read_shader("fragment");
 
-    let image = image::load(Cursor::new(&include_bytes!("textures/teak.png")[..]),
-                            image::PNG).unwrap().to_rgba();
-    let image_dimensions = image.dimensions();
-    let gl_image = glium::texture::RawImage2d::from_raw_rgba_reversed(
-        image.into_raw(),
-        image_dimensions
-    );
+    // let image = image::load(Cursor::new(&include_bytes!("textures/teak.png")[..]),
+    //                         image::PNG).unwrap().to_rgba();
+    // let image_dimensions = image.dimensions();
+    // let gl_image = glium::texture::RawImage2d::from_raw_rgba_reversed(
+    //     image.into_raw(),
+    //     image_dimensions
+    // );
 
     let display = glium::glutin::WindowBuilder::new().build_glium().unwrap();
 
-    let texture = glium::texture::Texture2d::new(&display, gl_image).unwrap();
+    // let texture = glium::texture::Texture2d::new(&display, gl_image).unwrap();
 
     let program = glium::Program::from_source(
         &display,
@@ -62,39 +64,29 @@ fn main() {
         None
     ).unwrap();
 
-    let vertex1 = Vertex { position: [-0.5, -0.5], tex_coords: [0.0, 0.0] };
-    let vertex2 = Vertex { position: [ 0.0,  0.5], tex_coords: [0.0, 1.0] };
-    let vertex3 = Vertex { position: [ 0.5,  0.25], tex_coords: [1.0, 0.0] };
 
-    let mut t: f32 = -0.5;
-
-    let shape = vec![vertex1, vertex2, vertex3];
-    let vertex_buffer = glium::VertexBuffer::new(&display, &shape).unwrap();
-
-    let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
+    let positions = glium::VertexBuffer::new(&display, &teapot::VERTICES).unwrap();
+    let normals = glium::VertexBuffer::new(&display, &teapot::NORMALS).unwrap();
+    let indices = glium::IndexBuffer::new(
+        &display, glium::index::PrimitiveType::TrianglesList, &teapot::INDICES
+    ).unwrap();
 
 
     loop {
-        t += 0.0002;
-        if t > 0.5 {
-            t = -0.5;
-        }
-
         let uniforms = uniform! {
             matrix: [
-                [ t.cos(), t.sin(), 0.0, 0.0],
-                [-t.sin(), t.cos(), 0.0, 0.0],
-                [0.0, 0.0, 1.0, 0.0],
-                [ t , 0.0, 0.0, 1.0f32],
+                [0.01, 0.0, 0.0, 0.0],
+                [0.0, 0.01, 0.0, 0.0],
+                [0.0, 0.0, 0.01, 0.0],
+                [0.0, 0.0, 0.0, 1.0f32],
             ],
-            tex: &texture,
         };
 
         let mut target = display.draw();
         target.clear_color(0.0, 0.0, 0.5, 1.0);
 
         target.draw(
-            &vertex_buffer,
+            (&positions, &normals),
             &indices,
             &program,
             &uniforms,
