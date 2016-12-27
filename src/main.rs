@@ -74,6 +74,7 @@ fn main() {
     let indices = glium::IndexBuffer::new(
         &display, glium::index::PrimitiveType::TrianglesList, &teapot::INDICES
     ).unwrap();
+    let light = [-1.0, 0.4, 0.9f32];
 
 
     loop {
@@ -84,6 +85,7 @@ fn main() {
                 [0.0, 0.0, 0.01, 0.0],
                 [0.0, 0.0, 0.0, 1.0f32],
             ],
+            u_light: light
         };
 
         let mut target = display.draw();
