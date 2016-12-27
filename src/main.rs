@@ -55,6 +55,7 @@ fn main() {
 
     let display = glium::glutin::WindowBuilder::new()
         .with_title("Glium tutorial")
+        .with_depth_buffer(24)
         .with_dimensions(600, 600)
         .build_glium()
         .unwrap();
@@ -74,6 +75,15 @@ fn main() {
     let indices = glium::IndexBuffer::new(
         &display, glium::index::PrimitiveType::TrianglesList, &teapot::INDICES
     ).unwrap();
+    let params = glium::DrawParameters {
+        depth: glium::Depth {
+            test: glium::draw_parameters::DepthTest::IfLess,
+            write: true,
+            .. Default::default()
+        },
+        .. Default::default()
+    };
+
     let light = [-1.0, 0.4, 0.9f32];
 
 
@@ -89,14 +99,14 @@ fn main() {
         };
 
         let mut target = display.draw();
-        target.clear_color(0.0, 0.0, 0.5, 1.0);
+        target.clear_color_and_depth((0.0, 0.0, 1.0, 1.0), 1.0);
 
         target.draw(
             (&positions, &normals),
             &indices,
             &program,
             &uniforms,
-            &Default::default()
+            &params,
         ).unwrap();
 
         target.finish().unwrap();
