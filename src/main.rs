@@ -87,14 +87,22 @@ fn main() {
 
     let light = [-1.0, 0.4, 0.9f32];
 
-    let matrix = [
-        [0.01, 0.0, 0.0, 0.0],
-        [0.0, 0.01, 0.0, 0.0],
-        [0.0, 0.0, 0.01, 0.0],
-        [0.0, 0.0, 2.0, 1.0f32],
-    ];
+    let mut t: f32 = -0.5;
+    let scale = 0.01;
 
     loop {
+        t = t + 0.00005;
+        if t >= 0.5 {
+            t = -0.5;
+        };
+
+        let matrix = [
+            [(scale / t).cos(), (scale / t).sin(), 0.0, 0.0],
+            [-(scale / t).sin(), (scale / t).cos(), 0.0, 0.0],
+            [0.0, 0.0, scale, 0.0],
+            [0.0, 0.0, 3.0, 1.0f32],
+        ];
+
         let mut target = display.draw();
         target.clear_color_and_depth((0.0, 0.0, 1.0, 1.0), 1.0);
 
