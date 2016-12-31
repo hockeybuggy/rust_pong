@@ -4,5 +4,7 @@ version = "0.1.0"
 authors = ["Douglas Anderson <hockeybuggy@gmail.com>"]
 
 [dependencies]
-glium = "*"
-image = "*"
+piston = "*"
+piston2d-graphics = "*"
+pistoncore-glutin_window = "*"
+piston2d-opengl_graphics = "*"
