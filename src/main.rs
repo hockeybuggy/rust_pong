@@ -67,6 +67,17 @@ fn main() {
             app.render(&r);
         }
 
+        if let Some(Button::Keyboard(key)) = e.press_args() {
+            println!("Press {:?}", key);
+        }
+
+        if let Some(button) = e.release_args() {
+            match button {
+                Button::Keyboard(key) => println!("Release {:?}", key),
+                _ => println!("Other button"),
+            }
+        }
+
         if let Some(u) = e.update_args() {
             app.update(&u);
         }
