@@ -10,6 +10,14 @@ use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{ GlGraphics, OpenGL };
 use graphics::types::Rectangle;
 
+
+pub struct Bounds {
+    top: f64,
+    bottom: f64,
+    left: f64,
+    right: f64,
+}
+
 pub struct Ball {
     x: f64,
     y: f64,
@@ -17,12 +25,21 @@ pub struct Ball {
 
     velocity_x: f64,
     velocity_y: f64,
+
+    bounds: Bounds,
 }
 
 impl Ball {
     fn update(&mut self) {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
+
+        if (self.x < self.bounds.left || self.x > self.bounds.right) {
+            self.velocity_x = -self.velocity_x;
+        }
+        if (self.y < self.bounds.bottom || self.y > self.bounds.top) {
+            self.velocity_y = -self.velocity_y;
+        }
     }
 
     fn rectangle(&mut self) -> Rectangle {
@@ -91,7 +108,6 @@ impl App {
         self.gl.draw(args.viewport(), |c, gl| {
             clear(GREEN, gl);
 
-            // let transform = c.transform.trans(x, y).trans(-25.0, -25.0);
             let transform = c.transform.trans(x, y);
 
             rectangle(RED, ball_rect, transform, gl);
@@ -110,7 +126,7 @@ fn main() {
     let opengl = OpenGL::V3_2;
 
     let mut window: Window = WindowSettings::new(
-        "spinning-square",
+        "rust pong",
         [400, 400],
         )
         .opengl(opengl)
@@ -118,24 +134,33 @@ fn main() {
         .build()
         .unwrap();
 
+    let bounds = Bounds {
+        top: 200.0,
+        bottom: -190.0,
+        left: -200.0,
+        right: 190.0,
+    };
+
     let ball = Ball {
         x: 0.0,
         y: 0.0,
         size: 10.0,
 
         velocity_x: 0.1,
-        velocity_y: 0.1,
+        velocity_y: 0.2,
+
+        bounds: bounds,
     };
 
     let left_paddle = Paddle {
-        x: 180.0,
+        x: 170.0,
         y: 10.0,
         height: 100.0,
         width: 10.0,
     };
 
     let right_paddle = Paddle {
-        x: -160.0,
+        x: -180.0,
         y: 10.0,
         height: 100.0,
         width: 10.0,
