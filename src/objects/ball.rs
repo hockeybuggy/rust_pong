@@ -1,3 +1,14 @@
+use graphics::types::Rectangle;
+
+use objects::paddle::Paddle;
+
+
+pub struct Bounds {
+    top: f64,
+    bottom: f64,
+    left: f64,
+    right: f64,
+}
 
 pub struct Ball {
     x: f64,
@@ -11,6 +22,27 @@ pub struct Ball {
 }
 
 impl Ball {
+    pub fn new() -> Ball {
+        let bounds = Bounds {
+            top: -200.0,
+            bottom: 190.0,
+            left: -200.0,
+            right: 190.0,
+        };
+
+        let ball = Ball {
+            x: 0.0,
+            y: 0.0,
+            size: 10.0,
+
+            velocity_x: 0.4,
+            velocity_y: 0.7,
+
+            bounds: bounds,
+        };
+        return ball;
+    }
+
     pub fn reset(&mut self) {
         self.x = 0.0;
         self.y = 0.0;

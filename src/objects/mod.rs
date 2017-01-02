@@ -1,2 +1,2 @@
-mod ball;
-mod paddle;
+pub mod ball;
+pub mod paddle;

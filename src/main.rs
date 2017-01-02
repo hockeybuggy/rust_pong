@@ -8,19 +8,12 @@ use piston::event_loop::*;
 use piston::input::*;
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{ GlGraphics, OpenGL };
-use graphics::types::Rectangle;
+// use graphics::types::Rectangle;
 
 mod objects;
 use objects::paddle::Paddle;
 use objects::ball::Ball;
 
-
-pub struct Bounds {
-    top: f64,
-    bottom: f64,
-    left: f64,
-    right: f64,
-}
 
 pub struct App {
     gl: GlGraphics, // OpenGL drawing backend
@@ -78,37 +71,10 @@ fn main() {
         .build()
         .unwrap();
 
-    let bounds = Bounds {
-        top: -200.0,
-        bottom: 190.0,
-        left: -200.0,
-        right: 190.0,
-    };
+    let ball = Ball::new();
 
-    let ball = Ball {
-        x: 0.0,
-        y: 0.0,
-        size: 10.0,
-
-        velocity_x: 0.4,
-        velocity_y: 0.7,
-
-        bounds: bounds,
-    };
-
-    let left_paddle = Paddle {
-        x: -180.0,
-        y: 10.0,
-        height: 100.0,
-        width: 10.0,
-    };
-
-    let right_paddle = Paddle {
-        x: 180.0,
-        y: 10.0,
-        height: 100.0,
-        width: 10.0,
-    };
+    let left_paddle = Paddle::new_left_paddle();
+    let right_paddle = Paddle::new_right_paddle();
 
     let mut app = App {
         gl: GlGraphics::new(opengl),
