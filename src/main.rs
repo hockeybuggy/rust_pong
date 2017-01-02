@@ -10,102 +10,16 @@ use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{ GlGraphics, OpenGL };
 use graphics::types::Rectangle;
 
+mod objects;
+use objects::paddle::Paddle;
+use objects::ball::Ball;
+
 
 pub struct Bounds {
     top: f64,
     bottom: f64,
     left: f64,
     right: f64,
-}
-
-pub struct Ball {
-    x: f64,
-    y: f64,
-    size: f64,
-
-    velocity_x: f64,
-    velocity_y: f64,
-
-    bounds: Bounds,
-}
-
-impl Ball {
-    fn reset(&mut self) {
-        self.x = 0.0;
-        self.y = 0.0;
-        self.velocity_x = 0.2;
-        self.velocity_y = 0.3;
-        // TODO set random speed
-    }
-
-    fn update(&mut self, left_paddle: &Paddle, right_paddle: &Paddle) {
-        self.x += self.velocity_x;
-        self.y += self.velocity_y;
-
-        if left_paddle.collision(self.x, self.y) || right_paddle.collision(self.x, self.y) {
-            println!("BOUNCE");
-            self.velocity_x = -self.velocity_x;
-        }
-
-        if self.y < self.bounds.top || self.y > self.bounds.bottom {
-            self.velocity_y = -self.velocity_y;
-        }
-
-        if self.x < self.bounds.left || self.x > self.bounds.right {
-            // TODO score a point for a side
-            println!("RESET");
-            self.reset();
-        }
-    }
-
-    fn rectangle(&mut self) -> Rectangle {
-        use graphics::rectangle;
-        // Off set the ball so that the middle of the ball is it's position.
-        let offset = self.size / 2.0;
-
-        return rectangle::rectangle_by_corners(
-            self.x - offset,
-            self.y - offset,
-            self.x + offset,
-            self.y + offset,
-        );
-    }
-}
-
-pub struct Paddle {
-    x: f64,
-    y: f64,
-    height: f64,
-    width: f64,
-}
-
-impl Paddle {
-    fn move_up(&mut self) {
-        self.y -= 10.0
-    }
-
-    fn move_down(&mut self) {
-        self.y += 10.0
-    }
-
-    fn collision(&self, x: f64, y: f64) -> bool {
-        if (x >= self.x && x < (self.x + self.width) &&
-            y >= self.y && y < (self.y + self.height)) {
-            return true;
-        }
-        return false;
-    }
-
-    fn rectangle(&mut self) -> Rectangle {
-        use graphics::rectangle;
-
-        return rectangle::rectangle_by_corners(
-            self.x,
-            self.y,
-            self.x + self.width,
-            self.y + self.height,
-        );
-    }
 }
 
 pub struct App {
