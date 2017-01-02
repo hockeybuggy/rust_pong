@@ -1,6 +1,6 @@
 use graphics::types::Rectangle;
 
-use objects::paddle::Paddle;
+use pong::paddle::Paddle;
 
 
 pub struct Bounds {
