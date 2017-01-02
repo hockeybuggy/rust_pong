@@ -2,8 +2,8 @@ use glutin_window::OpenGL;
 use opengl_graphics::GlGraphics;
 use piston::input::{ RenderArgs, UpdateArgs };
 
-use pong::paddle::Paddle;
 use pong::ball::Ball;
+use pong::paddle::Paddle;
 
 
 pub struct Game {
