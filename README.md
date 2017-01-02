@@ -20,4 +20,11 @@ The only current mode is two player. To move the left paddle use the `W` and
 `S` keys. For the right paddle use the `Up` and `Down` keys. Attempt to get the
 ball to hit the back of your opponents end.
 
+## TODO 
+
+- Limit paddle to screen
+- Show score in graphics
+- Improve ball paddle collisions (what happens if it hits the side of the paddle)
+- Increase speed after ball hit
+
 [SCREENSHOT]: /pong-screenshot.png
