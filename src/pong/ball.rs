@@ -1,4 +1,5 @@
 use graphics::types::Rectangle;
+use rand::random;
 
 use pong::paddle::Paddle;
 
@@ -24,10 +25,10 @@ pub struct Ball {
 impl Ball {
     pub fn new() -> Ball {
         let bounds = Bounds {
-            top: -200.0,
-            bottom: 190.0,
-            left: -200.0,
-            right: 190.0,
+            top: -195.0,
+            bottom: 195.0,
+            left: -195.0,
+            right: 195.0,
         };
 
         let ball = Ball {
@@ -46,16 +47,17 @@ impl Ball {
     pub fn reset(&mut self) {
         self.x = 0.0;
         self.y = 0.0;
-        self.velocity_x = 0.2;
-        self.velocity_y = 0.3;
-        // TODO set random speed
+        self.velocity_x = random::<f64>() - 0.5;
+        self.velocity_y = random::<f64>() - 0.5;
+        println!("{},{}", self.velocity_x, self.velocity_y);
     }
 
     pub fn update(&mut self, left_paddle: &Paddle, right_paddle: &Paddle) {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 
-        if left_paddle.collision(self.x, self.y) || right_paddle.collision(self.x, self.y) {
+        if left_paddle.collision(self.x, self.y) ||
+           right_paddle.collision(self.x, self.y) {
             println!("BOUNCE");
             self.velocity_x = -self.velocity_x;
         }

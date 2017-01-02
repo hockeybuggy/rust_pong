@@ -2,13 +2,13 @@ extern crate glutin_window;
 extern crate graphics;
 extern crate opengl_graphics;
 extern crate piston;
+extern crate rand;
 
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::OpenGL;
 use piston::event_loop::*;
 use piston::input::*;
 use piston::window::WindowSettings;
-
 
 mod pong;
 use pong::game::Game;
