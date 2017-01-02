@@ -35,16 +35,14 @@ impl Ball {
         self.y = 0.0;
         self.velocity_x = 0.2;
         self.velocity_y = 0.3;
+        // TODO set random speed
     }
 
     fn update(&mut self, left_paddle: &Paddle, right_paddle: &Paddle) {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 
-        if (
-            self.x >= left_paddle.x &&
-            self.x < (left_paddle.x + left_paddle.width)
-            ) {
+        if left_paddle.collision(self.x, self.y) || right_paddle.collision(self.x, self.y) {
             println!("BOUNCE");
             self.velocity_x = -self.velocity_x;
         }
@@ -62,12 +60,14 @@ impl Ball {
 
     fn rectangle(&mut self) -> Rectangle {
         use graphics::rectangle;
+        // Off set the ball so that the middle of the ball is it's position.
+        let offset = self.size / 2.0;
 
         return rectangle::rectangle_by_corners(
-            self.x,
-            self.y,
-            self.x + self.size,
-            self.y + self.size,
+            self.x - offset,
+            self.y - offset,
+            self.x + offset,
+            self.y + offset,
         );
     }
 }
@@ -86,6 +86,14 @@ impl Paddle {
 
     fn move_down(&mut self) {
         self.y += 10.0
+    }
+
+    fn collision(&self, x: f64, y: f64) -> bool {
+        if (x >= self.x && x < (self.x + self.width) &&
+            y >= self.y && y < (self.y + self.height)) {
+            return true;
+        }
+        return false;
     }
 
     fn rectangle(&mut self) -> Rectangle {
@@ -148,7 +156,7 @@ fn main() {
     let opengl = OpenGL::V3_2;
 
     let mut window: Window = WindowSettings::new(
-        "rust pong",
+        "Rust Pong",
         [400, 400],
         )
         .opengl(opengl)
