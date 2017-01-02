@@ -34,10 +34,10 @@ impl Ball {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 
-        if (self.x < self.bounds.left || self.x > self.bounds.right) {
+        if self.x < self.bounds.left || self.x > self.bounds.right {
             self.velocity_x = -self.velocity_x;
         }
-        if (self.y < self.bounds.bottom || self.y > self.bounds.top) {
+        if self.y < self.bounds.top || self.y > self.bounds.bottom {
             self.velocity_y = -self.velocity_y;
         }
     }
@@ -93,6 +93,7 @@ impl App {
     fn render(&mut self, args: &RenderArgs) {
         use graphics::*;
 
+        const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
         const BLUE: [f32; 4] = [0.0, 0.0, 1.0, 1.0];
         const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
         const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
@@ -106,11 +107,11 @@ impl App {
         let right_rect = self.right_paddle.rectangle();
 
         self.gl.draw(args.viewport(), |c, gl| {
-            clear(GREEN, gl);
+            clear(BLACK, gl);
 
             let transform = c.transform.trans(x, y);
 
-            rectangle(RED, ball_rect, transform, gl);
+            rectangle(GREEN, ball_rect, transform, gl);
 
             rectangle(RED, left_rect, transform, gl);
             rectangle(BLUE, right_rect, transform, gl);
@@ -135,8 +136,8 @@ fn main() {
         .unwrap();
 
     let bounds = Bounds {
-        top: 200.0,
-        bottom: -190.0,
+        top: -200.0,
+        bottom: 190.0,
         left: -200.0,
         right: 190.0,
     };
@@ -146,8 +147,8 @@ fn main() {
         y: 0.0,
         size: 10.0,
 
-        velocity_x: 0.1,
-        velocity_y: 0.2,
+        velocity_x: 0.4,
+        velocity_y: 0.7,
 
         bounds: bounds,
     };
