@@ -2,7 +2,7 @@
 
 A toy project as an excuse to play with rust graphics.
 
-This uses the piston game engine.
+It makes use of the piston game engine.
 
 ![A screen shot of the game in play][SCREENSHOT]
 
