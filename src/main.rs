@@ -30,15 +30,33 @@ pub struct Ball {
 }
 
 impl Ball {
-    fn update(&mut self) {
+    fn reset(&mut self) {
+        self.x = 0.0;
+        self.y = 0.0;
+        self.velocity_x = 0.2;
+        self.velocity_y = 0.3;
+    }
+
+    fn update(&mut self, left_paddle: &Paddle, right_paddle: &Paddle) {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 
-        if self.x < self.bounds.left || self.x > self.bounds.right {
+        if (
+            self.x >= left_paddle.x &&
+            self.x < (left_paddle.x + left_paddle.width)
+            ) {
+            println!("BOUNCE");
             self.velocity_x = -self.velocity_x;
         }
+
         if self.y < self.bounds.top || self.y > self.bounds.bottom {
             self.velocity_y = -self.velocity_y;
+        }
+
+        if self.x < self.bounds.left || self.x > self.bounds.right {
+            // TODO score a point for a side
+            println!("RESET");
+            self.reset();
         }
     }
 
@@ -119,7 +137,10 @@ impl App {
     }
 
     fn update(&mut self, args: &UpdateArgs) {
-        self.ball.update();
+        self.ball.update(
+            &self.left_paddle,
+            &self.right_paddle,
+        );
     }
 }
 
@@ -154,14 +175,14 @@ fn main() {
     };
 
     let left_paddle = Paddle {
-        x: 170.0,
+        x: -180.0,
         y: 10.0,
         height: 100.0,
         width: 10.0,
     };
 
     let right_paddle = Paddle {
-        x: -180.0,
+        x: 180.0,
         y: 10.0,
         height: 100.0,
         width: 10.0,
@@ -182,11 +203,11 @@ fn main() {
 
         if let Some(button) = e.press_args() {
             match button {
-                Button::Keyboard(Key::Up) => app.left_paddle.move_up(),
-                Button::Keyboard(Key::Down) => app.left_paddle.move_down(),
+                Button::Keyboard(Key::W) => app.left_paddle.move_up(),
+                Button::Keyboard(Key::S) => app.left_paddle.move_down(),
 
-                Button::Keyboard(Key::W) => app.right_paddle.move_up(),
-                Button::Keyboard(Key::S) => app.right_paddle.move_down(),
+                Button::Keyboard(Key::Up) => app.right_paddle.move_up(),
+                Button::Keyboard(Key::Down) => app.right_paddle.move_down(),
                 _ => println!("Other button"),
             }
         }
