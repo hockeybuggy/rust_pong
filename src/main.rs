@@ -8,6 +8,7 @@ use piston::event_loop::*;
 use piston::input::*;
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{ GlGraphics, OpenGL };
+use graphics::types::Rectangle;
 
 
 pub struct Paddle {
@@ -18,19 +19,30 @@ pub struct Paddle {
 }
 
 impl Paddle {
+
     fn move_up(&mut self) {
-        // println!("UPPPP");
         self.y -= 10.0
     }
 
     fn move_down(&mut self) {
-        // println!("DOWWNNN");
         self.y += 10.0
+    }
+
+    fn rectangle(&mut self) -> Rectangle {
+        use graphics::rectangle;
+
+        return rectangle::rectangle_by_corners(
+            self.x,
+            self.y,
+            self.x + self.width,
+            self.y + self.height,
+        );
     }
 }
 
 pub struct App {
     gl: GlGraphics, // OpenGL drawing backend
+    left_paddle: Paddle,
     right_paddle: Paddle,
 }
 
@@ -38,26 +50,23 @@ impl App {
     fn render(&mut self, args: &RenderArgs) {
         use graphics::*;
 
+        const BLUE: [f32; 4] = [0.0, 0.0, 1.0, 1.0];
         const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
         const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
-
-        let square = rectangle::rectangle_by_corners(
-            self.right_paddle.x,
-            self.right_paddle.y,
-            self.right_paddle.x + self.right_paddle.width,
-            self.right_paddle.y + self.right_paddle.height,
-        );
 
         let x = (args.width / 2) as f64;
         let y = (args.height / 2) as f64;
 
+        let left_rect = self.left_paddle.rectangle();
+        let right_rect = self.right_paddle.rectangle();
+
         self.gl.draw(args.viewport(), |c, gl| {
             clear(GREEN, gl);
 
-            let transform = c.transform.trans(x, y)
-                .trans(-25.0, -25.0);
+            let transform = c.transform.trans(x, y).trans(-25.0, -25.0);
 
-            rectangle(RED, square, transform, gl);
+            rectangle(RED, left_rect, transform, gl);
+            rectangle(BLUE, right_rect, transform, gl);
         });
     }
 
@@ -79,8 +88,15 @@ fn main() {
         .build()
         .unwrap();
 
-    let mut right_paddle = Paddle {
-        x: -150.0,
+    let left_paddle = Paddle {
+        x: 180.0,
+        y: 10.0,
+        height: 100.0,
+        width: 10.0,
+    };
+
+    let right_paddle = Paddle {
+        x: -160.0,
         y: 10.0,
         height: 100.0,
         width: 10.0,
@@ -88,6 +104,7 @@ fn main() {
 
     let mut app = App {
         gl: GlGraphics::new(opengl),
+        left_paddle: left_paddle,
         right_paddle: right_paddle,
     };
 
@@ -97,16 +114,13 @@ fn main() {
             app.render(&r);
         }
 
-        if let Some(Button::Keyboard(key)) = e.press_args() {
-            println!("Press {:?}", key);
-        }
-
-        if let Some(button) = e.release_args() {
+        if let Some(button) = e.press_args() {
             match button {
-                Button::Keyboard(Key::Up) => app.right_paddle.move_up(),
-                Button::Keyboard(Key::Down) => app.right_paddle.move_down(),
+                Button::Keyboard(Key::Up) => app.left_paddle.move_up(),
+                Button::Keyboard(Key::Down) => app.left_paddle.move_down(),
 
-                Button::Keyboard(key) => println!("Release {:?}", key),
+                Button::Keyboard(Key::W) => app.right_paddle.move_up(),
+                Button::Keyboard(Key::S) => app.right_paddle.move_down(),
                 _ => println!("Other button"),
             }
         }
@@ -115,5 +129,4 @@ fn main() {
             app.update(&u);
         }
     }
-
 }
