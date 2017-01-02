@@ -15,14 +15,14 @@ use objects::paddle::Paddle;
 use objects::ball::Ball;
 
 
-pub struct App {
+pub struct Game {
     gl: GlGraphics, // OpenGL drawing backend
     ball: Ball,
     left_paddle: Paddle,
     right_paddle: Paddle,
 }
 
-impl App {
+impl Game {
     fn render(&mut self, args: &RenderArgs) {
         use graphics::*;
 
@@ -76,7 +76,7 @@ fn main() {
     let left_paddle = Paddle::new_left_paddle();
     let right_paddle = Paddle::new_right_paddle();
 
-    let mut app = App {
+    let mut game = Game {
         gl: GlGraphics::new(opengl),
         ball: ball,
         left_paddle: left_paddle,
@@ -86,22 +86,22 @@ fn main() {
     let mut events = window.events();
     while let Some(e) = events.next(&mut window) {
         if let Some(r) = e.render_args() {
-            app.render(&r);
+            game.render(&r);
         }
 
         if let Some(button) = e.press_args() {
             match button {
-                Button::Keyboard(Key::W) => app.left_paddle.move_up(),
-                Button::Keyboard(Key::S) => app.left_paddle.move_down(),
+                Button::Keyboard(Key::W) => game.left_paddle.move_up(),
+                Button::Keyboard(Key::S) => game.left_paddle.move_down(),
 
-                Button::Keyboard(Key::Up) => app.right_paddle.move_up(),
-                Button::Keyboard(Key::Down) => app.right_paddle.move_down(),
+                Button::Keyboard(Key::Up) => game.right_paddle.move_up(),
+                Button::Keyboard(Key::Down) => game.right_paddle.move_down(),
                 _ => println!("Other button"),
             }
         }
 
         if let Some(u) = e.update_args() {
-            app.update(&u);
+            game.update(&u);
         }
     }
 }
