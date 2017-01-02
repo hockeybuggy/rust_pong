@@ -34,22 +34,35 @@ impl Paddle {
         self.y += 10.0
     }
 
+    fn left(&self) -> f64 {
+        return self.x - self.width / 2.0;
+    }
+
+    fn right(&self) -> f64 {
+        return self.x + self.width / 2.0;
+    }
+
+    fn top(&self) -> f64 {
+        return self.y + self.height / 2.0;
+    }
+
+    fn bottom(&self) -> f64 {
+        return self.y - self.height / 2.0;
+    }
+
     pub fn collision(&self, x: f64, y: f64) -> bool {
-        if x >= self.x && x < (self.x + self.width) &&
-            y >= self.y && y < (self.y + self.height) {
-            return true;
-        }
-        return false;
+        return x >= self.left() && x < self.right() &&
+               y >= self.bottom() && y < self.top();
     }
 
     pub fn rectangle(&mut self) -> Rectangle {
         use graphics::rectangle;
 
         return rectangle::rectangle_by_corners(
-            self.x,
-            self.y,
-            self.x + self.width,
-            self.y + self.height,
+            self.left(),
+            self.top(),
+            self.right(),
+            self.bottom(),
         );
     }
 }
