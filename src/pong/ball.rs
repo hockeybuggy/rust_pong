@@ -45,8 +45,10 @@ impl Ball {
     }
 
     pub fn reset(&mut self) {
+        // TODO Create new ball rather than reset. List of game balls.
         self.x = 0.0;
         self.y = 0.0;
+        // TODO ensure delta(x) > delta(y)
         self.velocity_x = random::<f64>() - 0.5;
         self.velocity_y = random::<f64>() - 0.5;
         println!("{},{}", self.velocity_x, self.velocity_y);
@@ -65,12 +67,14 @@ impl Ball {
         if self.y < self.bounds.top || self.y > self.bounds.bottom {
             self.velocity_y = -self.velocity_y;
         }
+    }
 
-        if self.x < self.bounds.left || self.x > self.bounds.right {
-            // TODO score a point for a side
-            println!("RESET");
-            self.reset();
-        }
+    pub fn left_scores(&self) -> bool {
+        return self.x > self.bounds.right;
+    }
+
+    pub fn right_scores(&self) -> bool {
+        return self.x < self.bounds.left;
     }
 
     pub fn rectangle(&mut self) -> Rectangle {

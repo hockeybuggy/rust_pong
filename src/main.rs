@@ -26,7 +26,6 @@ fn main() {
         .build()
         .unwrap();
 
-
     let mut game = Game::new(opengl);
 
     let mut events = window.events();
