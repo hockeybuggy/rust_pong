@@ -2,14 +2,8 @@ use graphics::types::Rectangle;
 use rand::random;
 
 use pong::paddle::Paddle;
+use pong::utils::Bounds;
 
-
-pub struct Bounds {
-    top: f64,
-    bottom: f64,
-    left: f64,
-    right: f64,
-}
 
 pub struct Ball {
     x: f64,
@@ -18,30 +12,18 @@ pub struct Ball {
 
     velocity_x: f64,
     velocity_y: f64,
-
-    bounds: Bounds,
 }
 
 impl Ball {
     pub fn new() -> Ball {
-        let bounds = Bounds {
-            top: -195.0,
-            bottom: 195.0,
-            left: -195.0,
-            right: 195.0,
-        };
-
-        let ball = Ball {
+        return Ball {
             x: 0.0,
             y: 0.0,
             size: 10.0,
 
             velocity_x: 0.4,
             velocity_y: 0.7,
-
-            bounds: bounds,
         };
-        return ball;
     }
 
     pub fn reset(&mut self) {
@@ -54,7 +36,7 @@ impl Ball {
         println!("{},{}", self.velocity_x, self.velocity_y);
     }
 
-    pub fn update(&mut self, left_paddle: &Paddle, right_paddle: &Paddle) {
+    pub fn update(&mut self, bounds: &Bounds, left_paddle: &Paddle, right_paddle: &Paddle) {
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 
@@ -69,17 +51,17 @@ impl Ball {
             };
         }
 
-        if self.y < self.bounds.top || self.y > self.bounds.bottom {
+        if self.y < bounds.top || self.y > bounds.bottom {
             self.velocity_y = -self.velocity_y;
         }
     }
 
-    pub fn left_scores(&self) -> bool {
-        return self.x > self.bounds.right;
+    pub fn left_scores(&self, bounds: &Bounds) -> bool {
+        return self.x > bounds.right;
     }
 
-    pub fn right_scores(&self) -> bool {
-        return self.x < self.bounds.left;
+    pub fn right_scores(&self, bounds: &Bounds) -> bool {
+        return self.x < bounds.left;
     }
 
     pub fn rectangle(&mut self) -> Rectangle {

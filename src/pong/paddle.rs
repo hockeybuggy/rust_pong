@@ -1,5 +1,7 @@
 use graphics::types::Rectangle;
 
+use pong::utils::Bounds;
+
 pub struct Paddle {
     x: f64,
     y: f64,
@@ -61,6 +63,7 @@ impl Paddle {
     }
 
     pub fn collision(&self, x: f64, y: f64) -> bool {
+        // collision will ball
         return x >= self.left() && x < self.right() &&
                y >= self.bottom() && y < self.top();
     }

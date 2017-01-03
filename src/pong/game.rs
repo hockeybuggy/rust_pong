@@ -4,11 +4,13 @@ use piston::input::{ RenderArgs, UpdateArgs };
 
 use pong::ball::Ball;
 use pong::paddle::Paddle;
+use pong::utils::Bounds;
 
 
 pub struct Game {
     gl: GlGraphics,
 
+    bounds: Bounds,
     ball: Ball,
     pub left_paddle: Paddle,
     pub right_paddle: Paddle,
@@ -17,6 +19,13 @@ pub struct Game {
 
 impl Game {
     pub fn new(opengl: OpenGL) -> Game {
+        let bounds = Bounds {
+            top: -195.0,
+            bottom: 195.0,
+            left: -195.0,
+            right: 195.0,
+        };
+
         let ball = Ball::new();
 
         let left_paddle = Paddle::new_left_paddle();
@@ -26,6 +35,7 @@ impl Game {
         let game = Game {
             gl: GlGraphics::new(opengl),
 
+            bounds: bounds,
             ball: ball,
             left_paddle: left_paddle,
             right_paddle: right_paddle,
@@ -73,15 +83,19 @@ impl Game {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-        self.ball.update(&self.left_paddle, &self.right_paddle);
+        self.ball.update(
+            &self.bounds,
+            &self.left_paddle,
+            &self.right_paddle
+        );
 
-        if self.ball.left_scores() {
+        if self.ball.left_scores(&self.bounds) {
             self.left_paddle.increase_score();
             println!("Left Scores!!");
             self.print_score();
             self.ball.reset();
         }
-        if self.ball.right_scores() {
+        if self.ball.right_scores(&self.bounds) {
             self.right_paddle.increase_score();
             println!("Right Scores!!");
             self.print_score();
