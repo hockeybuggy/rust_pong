@@ -22,7 +22,6 @@ ball to hit the back of your opponents end.
 
 ## TODO
 
-- Limit paddle to screen
 - Show score in graphics
 - Improve ball paddle collisions (what happens if it hits the side of the paddle)
 

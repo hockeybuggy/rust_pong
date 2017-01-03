@@ -70,7 +70,7 @@ impl Paddle {
     }
 
     pub fn collision(&self, x: f64, y: f64) -> bool {
-        // collision will ball
+        // Check for collision will ball represented by (x, y)
         return x >= self.left() && x < self.right() &&
                y >= self.top() && y < self.bottom();
     }
