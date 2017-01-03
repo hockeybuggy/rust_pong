@@ -62,6 +62,11 @@ impl Ball {
            right_paddle.collision(self.x, self.y) {
             println!("BOUNCE");
             self.velocity_x = -self.velocity_x;
+            self.velocity_y = if self.velocity_y.is_sign_positive() {
+                self.velocity_y + 0.1
+            } else {
+                self.velocity_y - 0.1
+            };
         }
 
         if self.y < self.bounds.top || self.y > self.bounds.bottom {
