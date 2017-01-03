@@ -12,10 +12,18 @@ use piston::window::WindowSettings;
 
 mod pong;
 use pong::game::Game;
+use pong::utils::Bounds;
 
 
 fn main() {
     let opengl = OpenGL::V3_2;
+
+    let bounds = Bounds {
+        top: -195.0,
+        bottom: 195.0,
+        left: -195.0,
+        right: 195.0,
+    };
 
     let mut window: Window = WindowSettings::new(
         "Rust Pong",
@@ -26,7 +34,7 @@ fn main() {
         .build()
         .unwrap();
 
-    let mut game = Game::new(opengl);
+    let mut game = Game::new(opengl, bounds);
 
     let mut events = window.events();
     while let Some(e) = events.next(&mut window) {

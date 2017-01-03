@@ -18,14 +18,7 @@ pub struct Game {
 
 
 impl Game {
-    pub fn new(opengl: OpenGL) -> Game {
-        let bounds = Bounds {
-            top: -195.0,
-            bottom: 195.0,
-            left: -195.0,
-            right: 195.0,
-        };
-
+    pub fn new(opengl: OpenGL, bounds: Bounds) -> Game {
         let ball = Ball::new();
 
         let left_paddle = Paddle::new_left_paddle();
