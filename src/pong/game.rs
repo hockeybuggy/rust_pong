@@ -24,7 +24,6 @@ impl Game {
         let left_paddle = Paddle::new_left_paddle();
         let right_paddle = Paddle::new_right_paddle();
 
-        println!("Starting game!");
         let game = Game {
             gl: GlGraphics::new(opengl),
 
@@ -33,7 +32,7 @@ impl Game {
             left_paddle: left_paddle,
             right_paddle: right_paddle,
         };
-        game.print_score();
+
         return game;
     }
 
@@ -86,13 +85,13 @@ impl Game {
             self.left_paddle.increase_score();
             println!("Left Scores!!");
             self.print_score();
-            self.ball.reset();
+            self.ball = Ball::new();
         }
         if self.ball.right_scores(&self.bounds) {
             self.right_paddle.increase_score();
             println!("Right Scores!!");
             self.print_score();
-            self.ball.reset();
+            self.ball = Ball::new();
         }
 
     }
