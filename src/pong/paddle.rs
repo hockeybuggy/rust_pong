@@ -34,12 +34,19 @@ impl Paddle {
         };
     }
 
-    pub fn move_up(&mut self) {
-        self.y -= 10.0
+    pub fn move_up(&mut self, bounds: &Bounds) {
+        self.y -= 10.0;
+        if self.top() < bounds.top {
+            self.y += 10.0;
+        }
     }
 
-    pub fn move_down(&mut self) {
-        self.y += 10.0
+    pub fn move_down(&mut self, bounds: &Bounds) {
+        self.y += 10.0;
+
+        if self.bottom() > bounds.bottom {
+            self.y -= 10.0;
+        }
     }
 
     fn left(&self) -> f64 {
@@ -51,11 +58,11 @@ impl Paddle {
     }
 
     fn top(&self) -> f64 {
-        return self.y + self.height / 2.0;
+        return self.y - self.height / 2.0;
     }
 
     fn bottom(&self) -> f64 {
-        return self.y - self.height / 2.0;
+        return self.y + self.height / 2.0;
     }
 
     pub fn increase_score(&mut self) {
@@ -65,7 +72,7 @@ impl Paddle {
     pub fn collision(&self, x: f64, y: f64) -> bool {
         // collision will ball
         return x >= self.left() && x < self.right() &&
-               y >= self.bottom() && y < self.top();
+               y >= self.top() && y < self.bottom();
     }
 
     pub fn rectangle(&mut self) -> Rectangle {

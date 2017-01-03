@@ -10,7 +10,7 @@ use pong::utils::Bounds;
 pub struct Game {
     gl: GlGraphics,
 
-    bounds: Bounds,
+    pub bounds: Bounds,
     ball: Ball,
     pub left_paddle: Paddle,
     pub right_paddle: Paddle,
