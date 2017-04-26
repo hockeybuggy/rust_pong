@@ -25,10 +25,7 @@ fn main() {
         right: 195.0,
     };
 
-    let mut window: Window = WindowSettings::new(
-        "Rust Pong",
-        [400, 400],
-        )
+    let mut window: Window = WindowSettings::new("Rust Pong", [400, 400])
         .opengl(opengl)
         .exit_on_esc(true)
         .build()

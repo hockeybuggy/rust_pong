@@ -1,6 +1,6 @@
 use glutin_window::OpenGL;
 use opengl_graphics::GlGraphics;
-use piston::input::{ RenderArgs, UpdateArgs };
+use piston::input::{RenderArgs, UpdateArgs};
 
 use pong::ball::Ball;
 use pong::paddle::Paddle;
@@ -59,27 +59,28 @@ impl Game {
         let left_rect = self.left_paddle.rectangle();
         let right_rect = self.right_paddle.rectangle();
 
-        self.gl.draw(args.viewport(), |c, gl| {
-            clear(BLACK, gl);
+        self.gl
+            .draw(args.viewport(), |c, gl| {
+                clear(BLACK, gl);
 
-            let transform = c.transform.trans(x, y);
+                let transform = c.transform.trans(x, y);
 
-            // Draw middle line
-            rectangle([0.25, 0.25, 0.25, 0.25], [-5.0, -200.0, 10.0, 400.0], transform, gl);
-            // Draw ball
-            rectangle(GREEN, ball_rect, transform, gl);
-            // Draw paddles
-            rectangle(RED, left_rect, transform, gl);
-            rectangle(BLUE, right_rect, transform, gl);
-        });
+                // Draw middle line
+                rectangle([0.25, 0.25, 0.25, 0.25],
+                          [-5.0, -200.0, 10.0, 400.0],
+                          transform,
+                          gl);
+                // Draw ball
+                rectangle(GREEN, ball_rect, transform, gl);
+                // Draw paddles
+                rectangle(RED, left_rect, transform, gl);
+                rectangle(BLUE, right_rect, transform, gl);
+            });
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-        self.ball.update(
-            &self.bounds,
-            &self.left_paddle,
-            &self.right_paddle
-        );
+        self.ball
+            .update(&self.bounds, &self.left_paddle, &self.right_paddle);
 
         if self.ball.left_scores(&self.bounds) {
             self.left_paddle.increase_score();
@@ -96,4 +97,3 @@ impl Game {
 
     }
 }
-
