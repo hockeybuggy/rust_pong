@@ -6,7 +6,8 @@ extern crate rand;
 
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::OpenGL;
-use piston::event_loop::*;
+
+use piston::event_loop::{Events, EventLoop, EventSettings};
 use piston::input::*;
 use piston::window::WindowSettings;
 
@@ -26,14 +27,14 @@ fn main() {
     };
 
     let mut window: Window = WindowSettings::new("Rust Pong", [400, 400])
-        .opengl(opengl)
         .exit_on_esc(true)
+        .opengl(opengl)
         .build()
         .unwrap();
 
     let mut game = Game::new(opengl, bounds);
 
-    let mut events = window.events();
+    let mut events = Events::new(EventSettings::new().lazy(true));
     while let Some(e) = events.next(&mut window) {
         if let Some(r) = e.render_args() {
             game.render(&r);
