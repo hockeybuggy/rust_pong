@@ -14,24 +14,24 @@ pub struct Paddle {
 impl Paddle {
     pub fn new_left_paddle() -> Paddle {
         return Paddle {
-                   x: -180.0,
-                   y: 10.0,
-                   height: 100.0,
-                   width: 10.0,
+            x: -180.0,
+            y: 10.0,
+            height: 100.0,
+            width: 10.0,
 
-                   score: 0,
-               };
+            score: 0,
+        };
     }
 
     pub fn new_right_paddle() -> Paddle {
         return Paddle {
-                   x: 180.0,
-                   y: 10.0,
-                   height: 100.0,
-                   width: 10.0,
+            x: 180.0,
+            y: 10.0,
+            height: 100.0,
+            width: 10.0,
 
-                   score: 0,
-               };
+            score: 0,
+        };
     }
 
     pub fn move_up(&mut self, bounds: &Bounds) {
@@ -77,9 +77,11 @@ impl Paddle {
     pub fn rectangle(&mut self) -> Rectangle {
         use graphics::rectangle;
 
-        return rectangle::rectangle_by_corners(self.left(),
-                                               self.top(),
-                                               self.right(),
-                                               self.bottom());
+        return rectangle::rectangle_by_corners(
+            self.left(),
+            self.top(),
+            self.right(),
+            self.bottom(),
+        );
     }
 }

@@ -61,9 +61,7 @@ impl Game {
 
         self.gl.draw(args.viewport(), |c, gl| {
             clear(COLOR_BLACK, gl);
-            draw_rectangles(c, gl,
-                [ball_rect, left_paddle_rect, right_paddle_rect],
-            );
+            draw_rectangles(c, gl, [ball_rect, left_paddle_rect, right_paddle_rect]);
         });
     }
 
@@ -71,7 +69,7 @@ impl Game {
         self.ball.update(
             &self.bounds,
             &self.left_paddle,
-            &self.right_paddle
+            &self.right_paddle,
         );
 
         if self.ball.left_scores(&self.bounds) {
@@ -90,11 +88,7 @@ impl Game {
     }
 }
 
-fn draw_rectangles<G: Graphics>(
-    c: Context,
-    gl: &mut G,
-    rectangles: [Rectangle; 3],
-) {
+fn draw_rectangles<G: Graphics>(c: Context, gl: &mut G, rectangles: [Rectangle; 3]) {
     // let transform = c.transform.trans(x, y);
     let window_size = c.viewport.unwrap().window_size;
     let x = (window_size[0] / 2) as f64;
@@ -106,14 +100,15 @@ fn draw_rectangles<G: Graphics>(
     let right_paddle_rect = rectangles[2];
 
     // Draw middle line
-    rectangle([0.25, 0.25, 0.25, 0.25],
-              [-5.0, -200.0, 10.0, 400.0],
-              transform,
-              gl);
+    rectangle(
+        [0.25, 0.25, 0.25, 0.25],
+        [-5.0, -200.0, 10.0, 400.0],
+        transform,
+        gl,
+    );
     // Draw ball
     rectangle(COLOR_GREEN, ball_rect, transform, gl);
     // Draw paddles
     rectangle(COLOR_RED, left_paddle_rect, transform, gl);
     rectangle(COLOR_BLUE, right_paddle_rect, transform, gl);
 }
-
