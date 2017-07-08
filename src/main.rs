@@ -9,6 +9,7 @@ use opengl_graphics::OpenGL;
 
 use piston::event_loop::{Events, EventLoop, EventSettings};
 use piston::input::*;
+use piston::event_loop::*;
 use piston::window::WindowSettings;
 
 mod pong;
@@ -36,8 +37,8 @@ fn main() {
 
     let mut events = Events::new(EventSettings::new().lazy(true));
     while let Some(e) = events.next(&mut window) {
-        if let Some(r) = e.render_args() {
-            game.render(&r);
+        if let Some(render_args) = e.render_args() {
+            game.render(&render_args);
         }
 
         if let Some(button) = e.press_args() {

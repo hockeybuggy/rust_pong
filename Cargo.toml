@@ -6,7 +6,7 @@ authors = ["Douglas Anderson <hockeybuggy@gmail.com>"]
 [dependencies]
 rand = "0.3"
 
-piston = "*"
+piston = "0.32"
 piston2d-graphics = "*"
 piston2d-opengl_graphics = "*"
 pistoncore-glutin_window = "*"
