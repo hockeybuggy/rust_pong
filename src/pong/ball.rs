@@ -1,5 +1,3 @@
-use graphics::types::Rectangle;
-use graphics::ellipse::Ellipse;
 use rand::random;
 
 use pong::paddle::Paddle;
