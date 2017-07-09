@@ -3,6 +3,7 @@ use opengl_graphics::GlGraphics;
 use piston::input::{RenderArgs, UpdateArgs};
 use graphics::{clear, rectangle, Graphics, Context, Transformed};
 use graphics::types::Rectangle;
+use graphics::ellipse;
 
 
 use pong::ball::Ball;
@@ -53,14 +54,14 @@ impl Game {
     }
 
     pub fn render(&mut self, args: &RenderArgs) {
-        let ball_rect = self.ball.rectangle();
+        let ball_ellipse = self.ball.ellipse();
 
         let left_paddle_rect = self.left_paddle.rectangle();
         let right_paddle_rect = self.right_paddle.rectangle();
 
         self.gl.draw(args.viewport(), |c, gl| {
             clear(COLOR_BLACK, gl);
-            draw_rectangles(c, gl, [ball_rect, left_paddle_rect, right_paddle_rect]);
+            draw_scene(c, gl, ball_ellipse, [left_paddle_rect, right_paddle_rect]);
         });
     }
 
@@ -87,16 +88,12 @@ impl Game {
     }
 }
 
-fn draw_rectangles<G: Graphics>(c: Context, gl: &mut G, rectangles: [Rectangle; 3]) {
-    // let transform = c.transform.trans(x, y);
+fn draw_scene<G: Graphics>(c: Context, gl: &mut G, ball: [f64; 3], paddles: [Rectangle; 2]) {
     let window_size = c.viewport.unwrap().window_size;
     let x = (window_size[0] / 2) as f64;
     let y = (window_size[1] / 2) as f64;
 
     let transform = c.transform.trans(x, y);
-    let ball_rect = rectangles[0];
-    let left_paddle_rect = rectangles[1];
-    let right_paddle_rect = rectangles[2];
 
     // Draw middle line
     rectangle(
@@ -105,9 +102,15 @@ fn draw_rectangles<G: Graphics>(c: Context, gl: &mut G, rectangles: [Rectangle; 
         transform,
         gl,
     );
+    let ball_ellipse = ellipse::Ellipse::new(COLOR_GREEN);
     // Draw ball
-    rectangle(COLOR_GREEN, ball_rect, transform, gl);
+    ball_ellipse.draw(
+        ellipse::circle(ball[0], ball[1], ball[2]),
+        &c.draw_state,
+        transform,
+        gl,
+    );
     // Draw paddles
-    rectangle(COLOR_RED, left_paddle_rect, transform, gl);
-    rectangle(COLOR_BLUE, right_paddle_rect, transform, gl);
+    rectangle(COLOR_RED, paddles[0], transform, gl);
+    rectangle(COLOR_BLUE, paddles[1], transform, gl);
 }

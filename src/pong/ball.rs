@@ -1,4 +1,5 @@
 use graphics::types::Rectangle;
+use graphics::ellipse::Ellipse;
 use rand::random;
 
 use pong::paddle::Paddle;
@@ -70,16 +71,8 @@ impl Ball {
         return self.x < bounds.left;
     }
 
-    pub fn rectangle(&mut self) -> Rectangle {
-        use graphics::rectangle;
-        // Off set the ball so that the middle of the ball is it's position.
-        let offset = self.size / 2.0;
-
-        return rectangle::rectangle_by_corners(
-            self.x - offset,
-            self.y - offset,
-            self.x + offset,
-            self.y + offset,
-        );
+    pub fn ellipse(&mut self) -> [f64; 3] {
+        let radius = self.size / 2.0;
+        return [self.x, self.y, radius];
     }
 }
