@@ -43,20 +43,20 @@ impl Paddle {
     }
 
     pub fn move_up(&mut self) {
-        if (self.dy > 0.0) {
+        if self.dy > 0.0 {
             self.dy = 0.0; // Stop acceleration in the opposite direction
         }
-        if (self.dy > 0.0 && self.dy.abs() > MAX_SPEED) {
+        if self.dy > 0.0 && self.dy.abs() > MAX_SPEED {
             return;
         }
         self.dy -= ACCELERATION;
     }
 
     pub fn move_down(&mut self) {
-        if (self.dy < 0.0) {
+        if self.dy < 0.0 {
             self.dy = 0.0; // Stop acceleration in the opposite direction
         }
-        if (self.dy < 0.0 && self.dy.abs() > MAX_SPEED) {
+        if self.dy < 0.0 && self.dy.abs() > MAX_SPEED {
             return;
         }
         self.dy += ACCELERATION;
@@ -65,10 +65,10 @@ impl Paddle {
     pub fn update(&mut self, bounds: &Bounds) {
         // Decelerate the paddles
         if self.dy > 0.0 {
-            self.dy -= ACCELERATION/DECELERATION_FACTOR;
+            self.dy -= ACCELERATION / DECELERATION_FACTOR;
         }
         if self.dy < 0.0 {
-            self.dy += ACCELERATION/DECELERATION_FACTOR;
+            self.dy += ACCELERATION / DECELERATION_FACTOR;
         }
 
         // Move the paddles
