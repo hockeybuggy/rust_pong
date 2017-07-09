@@ -34,13 +34,13 @@ impl Ball {
         println!("{} {}", velocity_x, velocity_y);
 
         return Ball {
-                   x: 0.0,
-                   y: 0.0,
-                   size: 10.0,
+            x: 0.0,
+            y: 0.0,
+            size: 10.0,
 
-                   velocity_x: velocity_x,
-                   velocity_y: velocity_y,
-               };
+            velocity_x: velocity_x,
+            velocity_y: velocity_y,
+        };
     }
 
     pub fn update(&mut self, bounds: &Bounds, left_paddle: &Paddle, right_paddle: &Paddle) {
@@ -75,9 +75,11 @@ impl Ball {
         // Off set the ball so that the middle of the ball is it's position.
         let offset = self.size / 2.0;
 
-        return rectangle::rectangle_by_corners(self.x - offset,
-                                               self.y - offset,
-                                               self.x + offset,
-                                               self.y + offset);
+        return rectangle::rectangle_by_corners(
+            self.x - offset,
+            self.y - offset,
+            self.x + offset,
+            self.y + offset,
+        );
     }
 }
