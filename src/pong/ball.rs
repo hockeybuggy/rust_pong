@@ -44,7 +44,6 @@ impl Ball {
     }
 
     pub fn update(&mut self, bounds: &Bounds, left_paddle: &Paddle, right_paddle: &Paddle) {
-        println!("{}, {}", self.velocity_x, self.velocity_y);
         self.x += self.velocity_x;
         self.y += self.velocity_y;
 

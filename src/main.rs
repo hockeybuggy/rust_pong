@@ -7,9 +7,8 @@ extern crate rand;
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::OpenGL;
 
-use piston::event_loop::{Events, EventLoop, EventSettings};
-use piston::input::*;
 use piston::event_loop::*;
+use piston::input::*;
 use piston::window::WindowSettings;
 
 mod pong;
@@ -35,7 +34,8 @@ fn main() {
 
     let mut game = Game::new(opengl, bounds);
 
-    let mut events = Events::new(EventSettings::new().lazy(true));
+    let event_settings = EventSettings::new();
+    let mut events = Events::new(event_settings);
     while let Some(e) = events.next(&mut window) {
         if let Some(render_args) = e.render_args() {
             game.render(&render_args);
@@ -52,8 +52,8 @@ fn main() {
             }
         }
 
-        if let Some(u) = e.update_args() {
-            game.update(&u);
+        if let Some(update_args) = e.update_args() {
+            game.update(&update_args);
         }
     }
 }

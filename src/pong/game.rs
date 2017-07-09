@@ -53,7 +53,6 @@ impl Game {
     }
 
     pub fn render(&mut self, args: &RenderArgs) {
-
         let ball_rect = self.ball.rectangle();
 
         let left_paddle_rect = self.left_paddle.rectangle();
