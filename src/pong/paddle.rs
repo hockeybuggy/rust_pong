@@ -2,9 +2,14 @@ use graphics::types::Rectangle;
 
 use pong::utils::Bounds;
 
+const ACCELERATION: f64 = 0.5;
+const DECELERATION_FACTOR: f64 = 100.0;
+
+
 pub struct Paddle {
     x: f64,
     y: f64,
+    dy: f64,
     height: f64,
     width: f64,
 
@@ -16,6 +21,7 @@ impl Paddle {
         return Paddle {
             x: -180.0,
             y: 10.0,
+            dy: 0.0,
             height: 100.0,
             width: 10.0,
 
@@ -27,6 +33,7 @@ impl Paddle {
         return Paddle {
             x: 180.0,
             y: 10.0,
+            dy: 0.0,
             height: 100.0,
             width: 10.0,
 
@@ -34,19 +41,32 @@ impl Paddle {
         };
     }
 
-    pub fn move_up(&mut self, bounds: &Bounds) {
-        self.y -= 10.0;
-        if self.top() < bounds.top {
-            self.y += 10.0;
-        }
+    pub fn move_up(&mut self) {
+        self.dy = ACCELERATION;
     }
 
-    pub fn move_down(&mut self, bounds: &Bounds) {
-        self.y += 10.0;
+    pub fn move_down(&mut self) {
+        self.dy = -ACCELERATION;
+    }
 
-        if self.bottom() > bounds.bottom {
-            self.y -= 10.0;
+    pub fn update(&mut self, bounds: &Bounds) {
+        // Decelerate the paddles
+        if self.dy > 0.0 {
+            self.dy -= ACCELERATION/DECELERATION_FACTOR;
         }
+        if self.dy < 0.0 {
+            self.dy += ACCELERATION/DECELERATION_FACTOR;
+        }
+
+        // Move the paddles
+        println!("{}", self.dy);
+        self.y += self.dy;
+
+        // Do a bounds check to limit the paddle's movement
+        if self.bottom() > bounds.bottom || self.top() < bounds.top {
+            self.y -= self.dy;
+        }
+
     }
 
     fn left(&self) -> f64 {

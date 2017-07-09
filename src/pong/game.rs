@@ -72,6 +72,9 @@ impl Game {
             &self.right_paddle,
         );
 
+        self.left_paddle.update(&self.bounds);
+        self.right_paddle.update(&self.bounds);
+
         if self.ball.left_scores(&self.bounds) {
             self.left_paddle.increase_score();
             println!("Left Scores!!");

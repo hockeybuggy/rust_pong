@@ -43,11 +43,11 @@ fn main() {
 
         if let Some(button) = e.press_args() {
             match button {
-                Button::Keyboard(Key::W) => game.left_paddle.move_up(&game.bounds),
-                Button::Keyboard(Key::S) => game.left_paddle.move_down(&game.bounds),
+                Button::Keyboard(Key::W) => game.left_paddle.move_up(),
+                Button::Keyboard(Key::S) => game.left_paddle.move_down(),
 
-                Button::Keyboard(Key::Up) => game.right_paddle.move_up(&game.bounds),
-                Button::Keyboard(Key::Down) => game.right_paddle.move_down(&game.bounds),
+                Button::Keyboard(Key::Up) => game.right_paddle.move_up(),
+                Button::Keyboard(Key::Down) => game.right_paddle.move_down(),
                 _ => println!("Other button"),
             }
         }
