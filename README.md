@@ -24,5 +24,6 @@ ball to hit the back of your opponents end.
 
 - Show score in graphics
 - Improve ball paddle collisions (what happens if it hits the side of the paddle)
+- Make Paddles less clunky
 
-[SCREENSHOT]: /pong-screenshot.png
+[SCREENSHOT]: /pong-screenshot.gif
