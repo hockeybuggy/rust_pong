@@ -2,8 +2,9 @@ use graphics::types::Rectangle;
 
 use pong::utils::Bounds;
 
-const ACCELERATION: f64 = 0.5;
+const ACCELERATION: f64 = 0.15;
 const DECELERATION_FACTOR: f64 = 100.0;
+const MAX_SPEED: f64 = 0.8;
 
 
 pub struct Paddle {
@@ -42,11 +43,23 @@ impl Paddle {
     }
 
     pub fn move_up(&mut self) {
-        self.dy = ACCELERATION;
+        if (self.dy > 0.0) {
+            self.dy = 0.0; // Stop acceleration in the opposite direction
+        }
+        if (self.dy > 0.0 && self.dy.abs() > MAX_SPEED) {
+            return;
+        }
+        self.dy -= ACCELERATION;
     }
 
     pub fn move_down(&mut self) {
-        self.dy = -ACCELERATION;
+        if (self.dy < 0.0) {
+            self.dy = 0.0; // Stop acceleration in the opposite direction
+        }
+        if (self.dy < 0.0 && self.dy.abs() > MAX_SPEED) {
+            return;
+        }
+        self.dy += ACCELERATION;
     }
 
     pub fn update(&mut self, bounds: &Bounds) {
@@ -59,14 +72,13 @@ impl Paddle {
         }
 
         // Move the paddles
-        println!("{}", self.dy);
         self.y += self.dy;
 
         // Do a bounds check to limit the paddle's movement
         if self.bottom() > bounds.bottom || self.top() < bounds.top {
             self.y -= self.dy;
+            self.dy = 0.0;
         }
-
     }
 
     fn left(&self) -> f64 {
