@@ -24,6 +24,9 @@ ball to hit the back of your opponents end.
 
 - Show score in graphics
 - Improve ball paddle collisions (what happens if it hits the side of the paddle)
-- Make Paddles less clunky
+- Make paddles less clunky
+- Increase ball speed
+- Create AI to play against.
+- Make the ball bounce in the right place.
 
 [SCREENSHOT]: /pong-screenshot.gif
