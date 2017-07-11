@@ -3,6 +3,8 @@ use rand::random;
 use pong::paddle::Paddle;
 use pong::utils::Bounds;
 
+const INITIAL_SPEED_FACTOR: f64 = 2.5;
+
 
 pub struct Ball {
     x: f64,
@@ -17,28 +19,28 @@ impl Ball {
     pub fn new() -> Ball {
         let rand1 = random::<f64>() - 0.5;
         let rand2 = random::<f64>() - 0.5;
-        let abs_max = rand1.abs().max(rand2.abs()) + 0.1;
-        let abs_min = rand1.abs().max(rand2.abs()) - 0.2;
+        let abs_max = rand1.abs().max(rand2.abs()) * INITIAL_SPEED_FACTOR;
+        let abs_min = rand1.abs().min(rand2.abs()) * INITIAL_SPEED_FACTOR;
 
-        let velocity_x = if rand1.is_sign_positive() {
+        let initial_velocity_x = if rand1.is_sign_positive() {
             abs_max
         } else {
             -abs_max
         };
-        let velocity_y = if rand2.is_sign_positive() {
+        let initial_velocity_y = if rand2.is_sign_positive() {
             abs_min
         } else {
             -abs_min
         };
-        println!("{} {}", velocity_x, velocity_y);
+        println!("{} {}", initial_velocity_x, initial_velocity_y);
 
         return Ball {
             x: 0.0,
             y: 0.0,
             size: 10.0,
 
-            velocity_x: velocity_x,
-            velocity_y: velocity_y,
+            velocity_x: initial_velocity_x,
+            velocity_y: initial_velocity_y,
         };
     }
 
